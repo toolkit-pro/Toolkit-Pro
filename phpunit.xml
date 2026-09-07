@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         verbose="true"
+         testdox="true"
+         stopOnFailure="false"
+         stopOnError="false"
+         stopOnWarning="false"
+         stopOnRisky="false"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60">
+
+    <!-- =================== -->
+    <!-- Test Suites -->
+    <!-- =================== -->
+    <testsuites>
+        <!-- Unit Tests -->
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+
+        <!-- Feature Tests -->
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+
+        <!-- Integration Tests -->
+        <testsuite name="Integration">
+            <directory suffix="Test.php">./tests/Integration</directory>
+        </testsuite>
+
+        <!-- API Tests -->
+        <testsuite name="API">
+            <directory suffix="Test.php">./tests/Api</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- =================== -->
+    <!-- Source Files -->
+    <!-- =================== -->
+    <source>
+        <include>
+            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./toolkit</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">./app/Console</directory>
+            <directory suffix=".php">./app/Exceptions</directory>
+            <directory suffix=".php">./app/Http/Middleware</directory>
+            <directory suffix=".php">./app/Providers</directory>
+        </exclude>
+    </source>
+
+    <!-- =================== -->
+    <!-- PHP Environment -->
+    <!-- =================== -->
+    <php>
+        <!-- Application Environment -->
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:2fl+Ktvkfl+Fuz4Qp/A75G2RTiWVA/ZoKZvp6fiiM10="/>
+        <env name="APP_DEBUG" value="false"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="APP_URL" value="http://localhost"/>
+
+        <!-- Cache Configuration -->
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="CACHE_STORE" value="array"/>
+
+        <!-- Session Configuration -->
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="SESSION_LIFETIME" value="120"/>
+
+        <!-- Queue Configuration -->
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+
+        <!-- Database Configuration -->
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="DB_FOREIGN_KEYS" value="true"/>
+
+        <!-- Mail Configuration -->
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="MAIL_DRIVER" value="array"/>
+
+        <!-- Filesystem Configuration -->
+        <env name="FILESYSTEM_DISK" value="local"/>
+        <env name="FILESYSTEM_DRIVER" value="local"/>
+
+        <!-- Broadcasting Configuration -->
+        <env name="BROADCAST_DRIVER" value="log"/>
+        <env name="BROADCAST_CONNECTION" value="log"/>
+
+        <!-- Scout/Search Configuration -->
+        <env name="SCOUT_DRIVER" value="null"/>
+        <env name="SCOUT_QUEUE" value="false"/>
+
+        <!-- Logging Configuration -->
+        <env name="LOG_CHANNEL" value="single"/>
+        <env name="LOG_LEVEL" value="error"/>
+        <env name="LOG_DEPRECATIONS_CHANNEL" value="null"/>
+
+        <!-- Services -->
+        <env name="OPENAI_API_KEY" value="test-key"/>
+        <env name="STRIPE_KEY" value="test-key"/>
+        <env name="STRIPE_SECRET" value="test-secret"/>
+
+        <!-- Server Variables -->
+        <server name="APP_ENV" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+
+        <!-- Constants -->
+        <const name="PHPUNIT_TESTSUITE" value="true"/>
+    </php>
+
+    <!-- =================== -->
+    <!-- Test Listeners -->
+    <!-- =================== -->
+    <listeners>
+        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
+        <listener class="Spatie\LaravelIgnition\Listeners\AddLaravelIgnitionTestListener"/>
+    </listeners>
+
+    <!-- =================== -->
+    <!-- Extensions -->
+    <!-- =================== -->
+    <extensions>
+        <extension class="Tests\Extensions\DatabaseExtension"/>
+        <extension class="Tests\Extensions\ApiExtension"/>
+    </extensions>
+
+    <!-- =================== -->
+    <!-- Coverage Configuration -->
+    <!-- =================== -->
+    <coverage>
+        <report>
+            <html outputDirectory="tests/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+            <text outputFile="tests/coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+            <clover outputFile="tests/coverage/clover.xml"/>
+            <cobertura outputFile="tests/coverage/cobertura.xml"/>
+            <crap4j outputFile="tests/coverage/crap4j.xml" threshold="30"/>
+        </report>
+    </coverage>
+
+    <!-- =================== -->
+    <!-- Logging Configuration -->
+    <!-- =================== -->
+    <logging>
+        <junit outputFile="tests/logs/junit.xml"/>
+        <teamcity outputFile="tests/logs/teamcity.log"/>
+        <testdoxHtml outputFile="tests/logs/testdox.html"/>
+        <testdoxText outputFile="tests/logs/testdox.txt"/>
+    </logging>
+
+    <!-- =================== -->
+    <!-- PHP Settings -->
+    <!-- =================== -->
+    <php>
+        <ini name="memory_limit" value="512M"/>
+        <ini name="max_execution_time" value="300"/>
+        <ini name="display_errors" value="1"/>
+        <ini name="error_reporting" value="E_ALL"/>
+        <ini name="date.timezone" value="UTC"/>
+    </php>
+</phpunit>
