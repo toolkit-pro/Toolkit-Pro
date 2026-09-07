@@ -1,0 +1,390 @@
+version: '3.8'
+
+# ===================
+# Networks
+# ===================
+networks:
+  toolkit-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+# ===================
+# Volumes
+# ===================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  minio_data:
+    driver: local
+  app_storage:
+    driver: local
+
+# ===================
+# Services
+# ===================
+services:
+  # ===================
+  # PHP Application (Laravel)
+  # ===================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toolkit-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - app_storage:/var/www/html/storage
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=toolkit_pro
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_CONNECTION=redis
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+      - rabbitmq
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD", "php", "artisan", "inspire"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ===================
+  # Queue Worker
+  # ===================
+  queue-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toolkit-queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan queue:work redis --queue=high,default,low --sleep=3 --tries=3 --timeout=90
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=toolkit_pro
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_CONNECTION=redis
+    depends_on:
+      - app
+      - redis
+      - postgres
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Scheduler
+  # ===================
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toolkit-scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan schedule:work
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=toolkit_pro
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - app
+      - redis
+      - postgres
+    networks:
+      - toolkit-network
+
+  # ===================
+  # WebSocket Server
+  # ===================
+  websocket:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toolkit-websocket
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan websockets:serve --host=0.0.0.0 --port=6001
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - APP_ENV=local
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PUSHER_APP_ID=toolkit-pro
+      - PUSHER_APP_KEY=toolkit_websocket_key
+      - PUSHER_APP_SECRET=toolkit_websocket_secret
+    ports:
+      - "6001:6001"
+    depends_on:
+      - app
+      - redis
+    networks:
+      - toolkit-network
+
+  # ===================
+  # PostgreSQL Database
+  # ===================
+  postgres:
+    image: postgres:15-alpine
+    container_name: toolkit-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=toolkit_pro
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C
+      - TZ=Asia/Dhaka
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d toolkit_pro"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===================
+  # Redis Cache
+  # ===================
+  redis:
+    image: redis:7-alpine
+    container_name: toolkit-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===================
+  # Elasticsearch
+  # ===================
+  elasticsearch:
+    image: elasticsearch:8.10.0
+    container_name: toolkit-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - cluster.name=toolkit-cluster
+      - node.name=toolkit-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ===================
+  # RabbitMQ Message Broker
+  # ===================
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: toolkit-rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=secret
+      - RABBITMQ_DEFAULT_VHOST=toolkit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ===================
+  # MinIO Object Storage (S3-compatible)
+  # ===================
+  minio:
+    image: minio/minio:latest
+    container_name: toolkit-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=secret123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - toolkit-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ===================
+  # Nginx Web Server
+  # ===================
+  nginx:
+    image: nginx:alpine
+    container_name: toolkit-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Adminer (Database Management)
+  # ===================
+  adminer:
+    image: adminer:latest
+    container_name: toolkit-adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    depends_on:
+      - postgres
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Redis Commander (Redis Management)
+  # ===================
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: toolkit-redis-commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8082:8081"
+    depends_on:
+      - redis
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Mailhog (Email Testing)
+  # ===================
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: toolkit-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Prometheus (Monitoring)
+  # ===================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: toolkit-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app
+    networks:
+      - toolkit-network
+
+  # ===================
+  # Grafana (Visualization)
+  # ===================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: toolkit-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - toolkit-network
