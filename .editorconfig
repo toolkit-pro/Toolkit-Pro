@@ -1,0 +1,129 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# 2-space indentation for JavaScript, TypeScript, and Vue files
+[*.{js,jsx,ts,tsx,vue,json,yml,yaml}]
+indent_size = 2
+
+# 4-space indentation for PHP files
+[*.php]
+indent_size = 4
+
+# 2-space indentation for CSS/SCSS files
+[*.{css,scss,sass,less}]
+indent_size = 2
+
+# 2-space indentation for HTML/Blade files
+[*.{html,htm,blade.php}]
+indent_size = 2
+
+# 2-space indentation for Markdown files
+[*.{md,markdown}]
+indent_size = 2
+trim_trailing_whitespace = false
+
+# 2-space indentation for XML files
+[*.{xml,svg}]
+indent_size = 2
+
+# 2-space indentation for Shell scripts
+[*.{sh,bash,zsh}]
+indent_size = 2
+
+# Tab indentation for Makefiles
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+# Tab indentation for Go files
+[*.go]
+indent_style = tab
+indent_size = 4
+
+# 2-space indentation for Ruby files
+[*.{rb,rake,gemspec}]
+indent_size = 2
+
+# 2-space indentation for Python files
+[*.py]
+indent_size = 4
+
+# 2-space indentation for Java files
+[*.java]
+indent_size = 4
+
+# 2-space indentation for C/C++ files
+[*.{c,h,cpp,hpp,cc,hh}]
+indent_size = 4
+
+# 2-space indentation for Rust files
+[*.rs]
+indent_size = 4
+
+# 2-space indentation for Swift files
+[*.swift]
+indent_size = 4
+
+# 2-space indentation for Kotlin files
+[*.{kt,kts}]
+indent_size = 4
+
+# 2-space indentation for Dart files
+[*.dart]
+indent_size = 2
+
+# 2-space indentation for SQL files
+[*.sql]
+indent_size = 2
+
+# 2-space indentation for Docker files
+[Dockerfile]
+indent_size = 2
+
+# 2-space indentation for Docker Compose files
+[docker-compose.yml]
+indent_size = 2
+
+# 2-space indentation for YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# 2-space indentation for TOML files
+[*.toml]
+indent_size = 2
+
+# 2-space indentation for INI files
+[*.{ini,cfg,conf}]
+indent_size = 2
+
+# 2-space indentation for .env files
+[.env]
+indent_size = 2
+
+# 2-space indentation for .gitignore files
+[.gitignore]
+indent_size = 2
+
+# 2-space indentation for .editorconfig files
+[.editorconfig]
+indent_size = 2
+
+# 2-space indentation for LICENSE files
+[LICENSE]
+indent_size = 2
+
+# Windows-specific overrides
+[*.{bat,cmd,ps1}]
+end_of_line = crlf
+indent_size = 2
