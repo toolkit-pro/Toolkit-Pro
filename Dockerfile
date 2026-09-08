@@ -1,5 +1,5 @@
 # ===================
-# Toolkit Pro - Render.com Optimized Dockerfile
+# Toolkit Pro - Render.com Final Dockerfile
 # ===================
 
 FROM php:8.1-fpm-alpine
@@ -21,9 +21,14 @@ RUN apk add --no-cache \
     curl \
     zip \
     unzip \
-    nginx \
-    supervisor \
-    tzdata
+    tzdata \
+    autoconf \
+    build-base \
+    make \
+    gcc \
+    g++ \
+    pkgconf \
+    libtool
 
 # ===================
 # PHP Extensions
