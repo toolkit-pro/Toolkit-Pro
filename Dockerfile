@@ -53,7 +53,15 @@ WORKDIR /var/www/html
 # সব ফাইল কপি করুন
 COPY . .
 
-# Composer ডিপেন্ডেন্সি ইনস্টল করুন
+# Storage directories তৈরি করুন
+RUN mkdir -p storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    storage/app/public \
+    bootstrap/cache
+
+# Composer install (নিরাপত্তা অ্যাডভাইজরি উপেক্ষা)
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -61,18 +69,13 @@ RUN composer install \
     --no-scripts \
     --optimize-autoloader \
     --prefer-dist \
-    --ignore-platform-reqs || true
+    --ignore-platform-reqs 2>/dev/null || true
 
 # ===================
 # Permissions
 # ===================
 RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/storage && \
-    chmod -R 755 /var/www/html/bootstrap/cache && \
-    mkdir -p /var/www/html/storage/framework/cache && \
-    mkdir -p /var/www/html/storage/framework/sessions && \
-    mkdir -p /var/www/html/storage/framework/views && \
-    mkdir -p /var/www/html/storage/logs
+    chmod -R 755 storage bootstrap/cache
 
 # ===================
 # Environment
@@ -83,4 +86,4 @@ EXPOSE 8080
 # ===================
 # Start Command
 # ===================
-CMD ["sh", "-c", "php artisan key:generate --force && php artisan migrate --force || true && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan key:generate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
