@@ -1,0 +1,101 @@
+# render.yaml
+services:
+  # Web Service
+  - type: web
+    name: toolkit-pro
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_NAME
+        value: "Toolkit Pro"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        fromService:
+          type: web
+          name: toolkit-pro
+          property: host
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: toolkit-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: toolkit-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: toolkit-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: toolkit-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: toolkit-db
+          property: password
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: toolkit-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: toolkit-redis
+          property: port
+
+  # Database
+  - type: pgsql
+    name: toolkit-db
+    plan: free
+    databaseName: toolkit_pro
+    user: admin
+
+  # Redis
+  - type: redis
+    name: toolkit-redis
+    plan: free
+
+  # Worker Service (Queue)
+  - type: worker
+    name: toolkit-worker
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    command: php artisan queue:work redis --queue=default --sleep=3 --tries=3
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: toolkit-db
+          property: host
+      - key: DB_DATABASE
+        fromDatabase:
+          name: toolkit-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: toolkit-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: toolkit-db
+          property: password
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: toolkit-redis
+          property: host
