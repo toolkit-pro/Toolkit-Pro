@@ -1,210 +1,27 @@
-# ===================
-# PHP / Laravel
-# ===================
 /vendor/
 node_modules/
-npm-debug.log
-yarn-error.log
-
-# Laravel Framework
-/bootstrap/compiled.php
-/storage/framework/compiled.php
-
-# Storage (সাব-ফোল্ডার বাদ, .gitkeep রাখুন)
+.env
+.env.backup
+.phpunit.result.cache
+composer.phar
 /storage/framework/cache/*
 /storage/framework/sessions/*
 /storage/framework/views/*
 /storage/logs/*
 /storage/app/*
-/storage/app/public/*
-/storage/debugbar/
 !/storage/framework/cache/.gitkeep
 !/storage/framework/sessions/.gitkeep
 !/storage/framework/views/.gitkeep
 !/storage/logs/.gitkeep
 !/storage/app/.gitkeep
-
-# Environment files
-.env
-.env.backup
-.env.production
-.env.staging
-.env.local
-.env.example.local
-.phpunit.result.cache
-
-# Composer
-composer.phar
-auth.json
-
-# Laravel Telescope
-/storage/telescope/
-
-# Laravel Horizon
-/storage/horizon/
-
-# ===================
-# Node.js / Frontend
-# ===================
-/node_modules/
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
 /public/build/
 /public/hot/
-/public/storage/
-/public/mix-manifest.json
-/public/js/
-/public/css/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Vite
-.vite/
-dist/
-build/
-
-# ===================
-# Testing
-# ===================
-/tests/coverage/
-/.phpunit.cache/
-.phpunit.result.cache
-.phpunit.cache/
-coverage/
-.nyc_output/
-
-# ===================
-# IDE / Editor
-# ===================
-/.idea/
-/.vscode/
-/.fleet/
-/.settings/
-*.sublime-project
-*.sublime-workspace
-.settings/
-.classpath
-.project
-*.swp
-*.swo
-*~
 .DS_Store
-
-# ===================
-# Operating System
-# ===================
 Thumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-
-# ===================
-# Logs & Temporary
-# ===================
 *.log
 *.tmp
-*.temp
-*.cache
-*.pid
-*.seed
-*.pid.lock
-tmp/
-temp/
-
-# ===================
-# Database
-# ===================
-*.sql
-*.sqlite
-*.sqlite3
-*.db
-*.db3
-/database/dumps/
-/database/backups/
-*.dump
-
-# ===================
-# Docker
-# ===================
-docker-compose.override.yml
-.docker/
-
-# ===================
-# API Keys & Secrets
-# ===================
-config/credentials.json
-*.pem
-*.key
-*.crt
-*.csr
-*.p12
-*.pfx
-*.jks
-*.keystore
-service-account.json
-firebase-adminsdk.json
-google-credentials.json
-
-# ===================
-# Build Artifacts
-# ===================
-/build/
-/dist/
-/out/
-/.next/
-/.nuxt/
-/.output/
-
-# ===================
-# Package Managers
-# ===================
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# ===================
-# AI/ML Models
-# ===================
-*.h5
-*.hdf5
-*.pb
-*.pbtxt
-*.onnx
-*.tflite
-*.pt
-*.pth
-*.ckpt
-*.safetensors
-*.bin
-/model/
-/models/
-/weights/
-/checkpoints/
-
-# ===================
-# Miscellaneous
-# ===================
-*.rar
-*.zip
-*.tar
-*.gz
-*.tgz
-*.bz2
-*.7z
-*.bak
-*.backup
-*.old
-*.orig
-*.rej
-~$*.doc
-~$*.docx
-~$*.xls
-~$*.xlsx
+*.swp
+.idea/
+.vscode/
