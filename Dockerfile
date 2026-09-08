@@ -46,23 +46,22 @@ RUN mkdir -p storage/framework/cache \
     storage/app/public \
     bootstrap/cache
 
-# Composer install
+# Composer install - জোর করে চালান
 RUN composer install \
     --no-dev \
     --no-interaction \
     --no-progress \
-    --no-scripts \
     --optimize-autoloader \
     --prefer-dist \
-    --ignore-platform-reqs 2>/dev/null || echo "Composer install skipped"
+    --ignore-platform-reqs
 
 # Permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 storage bootstrap/cache 2>/dev/null || true
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 storage bootstrap/cache
 
 # Environment
 ENV PORT=8080
 EXPOSE 8080
 
 # Start
-CMD ["sh", "-c", "php artisan key:generate --force 2>/dev/null; php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan key:generate --force; php artisan serve --host=0.0.0.0 --port=$PORT"]
