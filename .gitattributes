@@ -1,0 +1,331 @@
+# ===================
+# Auto detect text files and perform LF normalization
+# ===================
+* text=auto
+
+# ===================
+# Source Code Files
+# ===================
+*.php text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.vue text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.blade.php text eol=lf
+*.xml text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+*.md text eol=lf
+*.markdown text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+*.py text eol=lf
+*.rb text eol=lf
+*.java text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.go text eol=lf
+*.rs text eol=lf
+*.swift text eol=lf
+*.kt text eol=lf
+*.dart text eol=lf
+
+# ===================
+# Configuration Files
+# ===================
+.env.example text eol=lf
+.env.testing text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+.prettierrc text eol=lf
+.eslintrc text eol=lf
+.stylelintrc text eol=lf
+.babelrc text eol=lf
+.composer.json text eol=lf
+package.json text eol=lf
+package-lock.json text eol=lf
+composer.lock text eol=lf
+yarn.lock text eol=lf
+pnpm-lock.yaml text eol=lf
+
+# ===================
+# Binary Files
+# ===================
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text
+*.bmp binary
+*.tiff binary
+*.psd binary
+*.ai binary
+
+# ===================
+# Font Files
+# ===================
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# ===================
+# Audio Files
+# ===================
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.flac binary
+*.aac binary
+*.m4a binary
+
+# ===================
+# Video Files
+# ===================
+*.mp4 binary
+*.webm binary
+*.avi binary
+*.mkv binary
+*.mov binary
+*.wmv binary
+*.flv binary
+
+# ===================
+# Archive Files
+# ===================
+*.zip binary
+*.tar binary
+*.gz binary
+*.tgz binary
+*.bz2 binary
+*.7z binary
+*.rar binary
+
+# ===================
+# Document Files
+# ===================
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+*.odt binary
+*.ods binary
+*.odp binary
+
+# ===================
+# Executable Files
+# ===================
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.bin binary
+*.dat binary
+
+# ===================
+# Database Files
+# ===================
+*.sqlite binary
+*.sqlite3 binary
+*.db binary
+*.db3 binary
+*.mdb binary
+
+# ===================
+# Key & Certificate Files
+# ===================
+*.pem text
+*.key text
+*.crt text
+*.csr text
+*.p12 binary
+*.pfx binary
+*.jks binary
+*.keystore binary
+
+# ===================
+# IDE & Editor Files
+# ===================
+.idea/** text eol=lf
+.vscode/** text eol=lf
+*.sublime-project text eol=lf
+*.sublime-workspace text eol=lf
+
+# ===================
+# Docker Files
+# ===================
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+docker-compose.yaml text eol=lf
+.dockerignore text eol=lf
+
+# ===================
+# GitHub Files
+# ===================
+.github/** text eol=lf
+LICENSE text eol=lf
+CHANGELOG.md text eol=lf
+CONTRIBUTING.md text eol=lf
+CODE_OF_CONDUCT.md text eol=lf
+SECURITY.md text eol=lf
+
+# ===================
+# Export Ignore
+# ===================
+# ফাইলগুলো গিট আর্কাইভে অন্তর্ভুক্ত হবে না
+.gitattributes export-ignore
+.gitignore export-ignore
+.editorconfig export-ignore
+.travis.yml export-ignore
+.phpunit.result.cache export-ignore
+.github/ export-ignore
+tests/ export-ignore
+docs/ export-ignore
+docker/ export-ignore
+node_modules/ export-ignore
+vendor/ export-ignore
+
+# ===================
+# Linguistic Detection
+# ===================
+# ভাষা পরিসংখ্যানের জন্য
+*.php linguist-language=PHP
+*.js linguist-language=JavaScript
+*.vue linguist-language=Vue
+*.css linguist-language=CSS
+*.scss linguist-language=SCSS
+*.html linguist-language=HTML
+*.blade.php linguist-language=Blade
+*.md linguist-language=Markdown
+*.json linguist-language=JSON
+*.xml linguist-language=XML
+*.yml linguist-language=YAML
+
+# ===================
+# Diff Settings
+# ===================
+# বড় ফাইলের জন্য
+*.min.js -diff
+*.min.css -diff
+package-lock.json -diff
+composer.lock -diff
+yarn.lock -diff
+pnpm-lock.yaml -diff
+
+# ===================
+# Merge Strategy
+# ===================
+# বাইনারি ফাইলের জন্য মার্জ কৌশল
+*.png merge=binary
+*.jpg merge=binary
+*.jpeg merge=binary
+*.gif merge=binary
+*.ico merge=binary
+*.pdf merge=binary
+*.zip merge=binary
+*.tar merge=binary
+*.gz merge=binary
+
+# ===================
+# Custom Merge Drivers
+# ===================
+# composer.lock এর জন্য কাস্টম মার্জ
+composer.lock merge=ours
+
+# package-lock.json এর জন্য কাস্টম মার্জ
+package-lock.json merge=ours
+
+# ===================
+# Whitespace Settings
+# ===================
+# PHP ফাইলে whitespace গুরুত্বপূর্ণ
+*.php whitespace=trailing-space,space-before-tab
+
+# JavaScript ফাইলে whitespace গুরুত্বপূর্ণ
+*.js whitespace=trailing-space,space-before-tab
+
+# Markdown ফাইলে trailing whitespace গুরুত্বপূর্ণ
+*.md whitespace=trailing-space
+
+# ===================
+# Large File Settings
+# ===================
+# ৫০MB এর বেশি ফাইল LFS ব্যবহার করবে
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.ai filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.mkv filter=lfs diff=lfs merge=lfs -text
+
+# ===================
+# EOL Normalization
+# ===================
+# Windows batch files CRLF ব্যবহার করবে
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Shell scripts LF ব্যবহার করবে
+*.sh text eol=lf
+*.bash text eol=lf
+
+# ===================
+# Generated Files
+# ===================
+# জেনারেটেড ফাইল গিট ডিফে দেখানো হবে না
+public/build/** -diff
+public/js/** -diff
+public/css/** -diff
+storage/framework/** -diff
+storage/logs/** -diff
+
+# ===================
+# Documentation
+# ===================
+# ডকুমেন্টেশন ফাইল
+docs/** linguist-documentation
+documentation/** linguist-documentation
+wiki/** linguist-documentation
+
+# ===================
+# Vendored Files
+# ===================
+# ভেন্ডর ফাইল ভাষা পরিসংখ্যানে গণনা হবে না
+vendor/** linguist-vendored
+node_modules/** linguist-vendored
+bower_components/** linguist-vendored
+
+# ===================
+# Generated Files
+# ===================
+# জেনারেটেড ফাইল ভাষা পরিসংখ্যানে গণনা হবে না
+package-lock.json linguist-generated
+composer.lock linguist-generated
+yarn.lock linguist-generated
+pnpm-lock.yaml linguist-generated
