@@ -6,126 +6,29 @@
         "toolkit",
         "tools",
         "online-tools",
-        "laravel",
-        "ai",
-        "automation",
-        "blockchain"
+        "laravel"
     ],
     "license": "MIT",
-    "version": "2.0.0",
-    "authors": [
-        {
-            "name": "Toolkit Pro Team",
-            "email": "support@toolkitpro.com",
-            "homepage": "https://toolkitpro.com",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "support@toolkitpro.com",
-        "issues": "https://github.com/yourusername/toolkit-pro/issues",
-        "source": "https://github.com/yourusername/toolkit-pro",
-        "docs": "https://docs.toolkitpro.com",
-        "forum": "https://community.toolkitpro.com"
-    },
-    "funding": [
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/yourusername"
-        },
-        {
-            "type": "patreon",
-            "url": "https://patreon.com/toolkitpro"
-        }
-    ],
     "require": {
         "php": "^8.1",
-        "ext-curl": "*",
-        "ext-json": "*",
-        "ext-mbstring": "*",
-        "ext-openssl": "*",
-        "ext-pdo": "*",
-        "ext-pdo_pgsql": "*",
-        "ext-redis": "*",
-        "ext-zip": "*",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
-        "laravel/horizon": "^5.15",
-        "laravel/telescope": "^4.14",
-        "laravel/scout": "^10.0",
         "spatie/laravel-permission": "^5.10",
-        "spatie/laravel-activitylog": "^4.7",
-        "spatie/laravel-medialibrary": "^10.0",
-        "spatie/laravel-backup": "^8.0",
-        "spatie/laravel-sitemap": "^6.0",
-        "spatie/laravel-translatable": "^6.0",
-        "predis/predis": "^2.1",
         "guzzlehttp/guzzle": "^7.5",
-        "elasticsearch/elasticsearch": "^8.0",
-        "php-amqplib/php-amqplib": "^3.5",
-        "pusher/pusher-php-server": "^7.2",
-        "beyondcode/laravel-websockets": "^1.14",
-        "intervention/image": "^2.7",
-        "barryvdh/laravel-dompdf": "^2.0",
-        "maatwebsite/excel": "^3.1",
-        "phpoffice/phppresentation": "^1.0",
-        "phpoffice/phpword": "^1.0",
-        "php-ffmpeg/php-ffmpeg": "^1.0",
-        "thiagoalessio/tesseract_ocr": "^2.13",
-        "stripe/stripe-php": "^13.0",
-        "paypal/paypal-checkout-sdk": "^1.0",
-        "web3p/web3.php": "^0.1.4",
-        "simplito/elliptic-php": "^1.0",
-        "firebase/php-jwt": "^6.8",
-        "google/apiclient": "^2.15",
-        "league/oauth2-client": "^2.6",
-        "league/flysystem-aws-s3-v3": "^3.0",
-        "league/flysystem-ftp": "^3.0",
-        "league/flysystem-sftp-v3": "^3.0",
-        "league/csv": "^9.8",
-        "league/html-to-markdown": "^5.1",
-        "symfony/http-client": "^6.3",
-        "symfony/mailer": "^6.3",
-        "symfony/dom-crawler": "^6.3",
-        "symfony/css-selector": "^6.3",
-        "voku/portable-ascii": "^2.0",
-        "ramsey/uuid": "^4.7",
-        "nesbot/carbon": "^2.68",
-        "guzzlehttp/psr7": "^2.5",
-        "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0",
-        "psr/log": "^3.0",
-        "monolog/monolog": "^3.4",
-        "vlucas/phpdotenv": "^5.5",
-        "doctrine/dbal": "^3.6",
-        "sentry/sentry-laravel": "^4.0",
-        "itsgoingd/clockwork": "^5.1"
+        "predis/predis": "^2.1"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^7.9",
-        "phpunit/phpunit": "^10.4",
-        "spatie/laravel-ignition": "^2.3",
-        "barryvdh/laravel-ide-helper": "^2.13",
-        "barryvdh/laravel-debugbar": "^3.9",
-        "roave/security-advisories": "dev-latest"
+        "phpunit/phpunit": "^10.0",
+        "fakerphp/faker": "^1.23"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Toolkit\\": "toolkit/"
+            "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
             "app/Helpers/helpers.php"
-        ],
-        "classmap": [
-            "database/seeders",
-            "database/factories"
         ]
     },
     "autoload-dev": {
@@ -138,102 +41,30 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "@php artisan optimize"
-        ],
-        "test": [
-            "@php artisan test"
-        ],
-        "test-coverage": [
-            "@php artisan test --coverage"
-        ],
-        "format": [
-            "vendor/bin/pint"
-        ],
-        "analyse": [
-            "vendor/bin/phpstan analyse"
-        ],
-        "lint": [
-            "vendor/bin/pint --test"
-        ],
-        "fix": [
-            "vendor/bin/pint --dirty"
         ]
     },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform-check": false,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "simplito/elliptic-php": true
+            "php-http/discovery": true
+        },
+        "audit": {
+            "block": false
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
     "extra": {
         "laravel": {
-            "providers": [
-                "App\\Providers\\AppServiceProvider",
-                "App\\Providers\\AuthServiceProvider",
-                "App\\Providers\\EventServiceProvider",
-                "App\\Providers\\RouteServiceProvider",
-                "App\\Providers\\BroadcastServiceProvider",
-                "App\\Providers\\HorizonServiceProvider",
-                "App\\Providers\\TelescopeServiceProvider"
-            ],
-            "aliases": {
-                "App": "Illuminate\\Support\\Facades\\App",
-                "Arr": "Illuminate\\Support\\Arr",
-                "Artisan": "Illuminate\\Support\\Facades\\Artisan",
-                "Auth": "Illuminate\\Support\\Facades\\Auth",
-                "Blade": "Illuminate\\Support\\Facades\\Blade",
-                "Broadcast": "Illuminate\\Support\\Facades\\Broadcast",
-                "Bus": "Illuminate\\Support\\Facades\\Bus",
-                "Cache": "Illuminate\\Support\\Facades\\Cache",
-                "Config": "Illuminate\\Support\\Facades\\Config",
-                "Cookie": "Illuminate\\Support\\Facades\\Cookie",
-                "Crypt": "Illuminate\\Support\\Facades\\Crypt",
-                "Date": "Illuminate\\Support\\Facades\\Date",
-                "DB": "Illuminate\\Support\\Facades\\DB",
-                "Eloquent": "Illuminate\\Database\\Eloquent\\Model",
-                "Event": "Illuminate\\Support\\Facades\\Event",
-                "File": "Illuminate\\Support\\Facades\\File",
-                "Gate": "Illuminate\\Support\\Facades\\Gate",
-                "Hash": "Illuminate\\Support\\Facades\\Hash",
-                "Http": "Illuminate\\Support\\Facades\\Http",
-                "Js": "Illuminate\\Support\\Js",
-                "Lang": "Illuminate\\Support\\Facades\\Lang",
-                "Log": "Illuminate\\Support\\Facades\\Log",
-                "Mail": "Illuminate\\Support\\Facades\\Mail",
-                "Notification": "Illuminate\\Support\\Facades\\Notification",
-                "Password": "Illuminate\\Support\\Facades\\Password",
-                "Queue": "Illuminate\\Support\\Facades\\Queue",
-                "RateLimiter": "Illuminate\\Support\\Facades\\RateLimiter",
-                "Redirect": "Illuminate\\Support\\Facades\\Redirect",
-                "Request": "Illuminate\\Support\\Facades\\Request",
-                "Response": "Illuminate\\Support\\Facades\\Response",
-                "Route": "Illuminate\\Support\\Facades\\Route",
-                "Schema": "Illuminate\\Support\\Facades\\Schema",
-                "Session": "Illuminate\\Support\\Facades\\Session",
-                "Storage": "Illuminate\\Support\\Facades\\Storage",
-                "Str": "Illuminate\\Support\\Str",
-                "URL": "Illuminate\\Support\\Facades\\URL",
-                "Validator": "Illuminate\\Support\\Facades\\Validator",
-                "View": "Illuminate\\Support\\Facades\\View",
-                "Vite": "Illuminate\\Support\\Facades\\Vite"
-            }
+            "dont-discover": []
         }
     }
 }
